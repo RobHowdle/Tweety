@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TweetsController;
+use App\Http\Controllers\ProfilesController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +24,12 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+    return view('tweets.dashboard');
+})->name('tweets/dashboard');
 
 
-Route::get('dashboard',[HomeController::class, 'index']);
+Route::get('tweets/dashboard', [HomeController::class, 'index']);
+Route::get('/tweets', [TweetsController::class, 'index']);
 Route::post('/tweets', [TweetsController::class, 'store']);
+
+Route::get('/profiles/{user}', [ProfilesController::class, 'show'])->name('profile');
