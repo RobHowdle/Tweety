@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TweetsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-use App\Http\Controllers\HomeController;
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,3 +26,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 
 Route::get('dashboard',[HomeController::class, 'index']);
+Route::post('/tweets', [TweetsController::class, 'store']);
