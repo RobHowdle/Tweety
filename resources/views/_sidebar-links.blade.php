@@ -1,26 +1,30 @@
 <ul>
     <li>
-        <a class="font-bold text-lg mb-4 block" href="/tweets">Home</a>
+        <a class="block mb-4 text-lg font-bold" href="/tweets">Home</a>
     </li>
     <li>
-        <a class="font-bold text-lg mb-4 block" href="/">Explore</a>
+        <a class="block mb-4 text-lg font-bold" href="/explore">Explore</a>
     </li>
     <li>
-        <a class="font-bold text-lg mb-4 block" href="/">Notifications</a>
+        <a class="block mb-4 text-lg font-bold" href="/">Notifications</a>
     </li>
     <li>
-        <a class="font-bold text-lg mb-4 block" href="/">Messages</a>
+        <a class="block mb-4 text-lg font-bold" href="/">Messages</a>
     </li>
     <li>
-        <a class="font-bold text-lg mb-4 block" href="/">Bookmarks</a>
+        <a class="block mb-4 text-lg font-bold" href="/">Bookmarks</a>
     </li>
     <li>
-        <a class="font-bold text-lg mb-4 block" href="/">Lists</a>
+        <a class="block mb-4 text-lg font-bold" href="/">Lists</a>
     </li>
     <li>
-        <a class="font-bold text-lg mb-4 block" href="{{ route('profile', auth()->user()) }}">Profile</a>
+        <a class="block mb-4 text-lg font-bold" href="{{ route('profile', current_user()) }}">Profile</a>
     </li>
     <li>
-        <a class="font-bold text-lg mb-4 block" href="/">More</a>
+        <form method="POST" action="/logout">
+            @csrf
+
+            <button class="block mb-4 text-lg font-bold">Logout</button>
+        </form>
     </li>
 </ul>

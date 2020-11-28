@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('tweets.dashboard', [
+        return view('dashboard', [
             'tweets' => auth()->user()->timeline()
         ]);
     }

@@ -17,6 +17,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use Followable;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +25,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'username',
+        'avatar',
         'name',
         'email',
         'password',
@@ -59,37 +62,46 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
     public function timeline()
     {
         $friends = $this->follows()->pluck('id');
 
         return Tweet::whereIn('user_id', $friends)
-        ->orWhere('user_id', $this->id)
-        ->latest()->get();
+            ->orWhere('user_id', $this->id)
+            ->withLikes()
+            ->latest()->paginate(50);
     }
 
     public function tweets()
     {
-        return $this->hasMany(Tweet::class);
+        return $this->hasMany(Tweet::class)->latest();
     }
 
-    public function getAvatarAttribute()
+    public function getAvatarAttribute($value)
     {
-        return "https://i.pravatar.cc/200?u=" . $this->email;
-    }
 
-    public function follow(User $user)
-    {
-        return $this->follows()->save($user);
-    }
-
-    public function follows()
-    {
-        return $this->belongsToMany(User::class, 'follows', 'user_id', 'following_user_id');
+        return asset($value ?: '/images/default-avatar.png');
     }
 
     public function getRouteKeyName()
     {
         return 'name';
+    }
+
+    public function path($append = '')
+    {
+        $path = route('profile', $this->username);
+
+        return $append ? "{$path}/{$append}" : $path;
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
 }
